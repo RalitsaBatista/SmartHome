@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html>
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{security.page.title}">Security - Smart Home</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+
+<body>
+<div class="app">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">⌂</div>
+            <div>
+                <h1 th:text="#{app.brand}">SmartHome</h1>
+                <span th:text="#{app.subtitle}">Control Center</span>
+            </div>
+        </div>
+
+        <nav class="nav">
+            <a class="nav-item" th:href="@{/}" th:text="'🏠 ' + #{nav.dashboard}">🏠 Dashboard</a>
+            <a class="nav-item" th:href="@{/lighting}" th:text="'💡 ' + #{nav.lighting}">💡 Lighting</a>
+            <a class="nav-item" th:href="@{/climate}" th:text="'🌡 ' + #{nav.climate}">🌡 Climate</a>
+            <a class="nav-item active" th:href="@{/security}" th:text="'🔒 ' + #{nav.security}">🔒 Security</a>
+            <a class="nav-item" th:href="@{/settings}" th:text="'⚙ ' + #{nav.settings}">⚙ Settings</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+        <section class="topbar">
+            <div>
+                <h2 th:text="#{security.page.heading}">Security</h2>
+                <p th:text="#{security.page.description}">Monitor locks, cameras, sensors, and home protection status.</p>
+            </div>
+
+            <div class="topbar-actions">
+                <div class="language-switch">
+                    <span class="language-title" th:text="#{language.label}">Language</span>
+
+                    <a class="language-button"
+                       th:href="@{/security(lang='en')}"
+                       th:classappend="${#locale.language == 'en'} ? ' active' : ''">
+                        EN
+                    </a>
+
+                    <a class="language-button"
+                       th:href="@{/security(lang='bg')}"
+                       th:classappend="${#locale.language == 'bg'} ? ' active' : ''">
+                        BG
+                    </a>
+                </div>
+
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    <span th:text="#{topbar.online}">System online</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="summary-grid">
+            <article class="summary-card">
+                <div class="summary-label" th:text="#{security.summary.alarm}">Alarm</div>
+                <div class="summary-value" id="alarmSummary" th:text="#{security.alarm.armedStay}">Armed Stay</div>
+                <div class="summary-trend" th:text="#{security.summary.alarm.status}">Perimeter protection active</div>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-label" th:text="#{security.summary.doors}">Doors</div>
+                <div class="summary-value">3/3</div>
+                <div class="summary-trend" th:text="#{security.summary.doors.status}">All doors locked</div>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-label" th:text="#{security.summary.cameras}">Cameras</div>
+                <div class="summary-value">4</div>
+                <div class="summary-trend" th:text="#{security.summary.cameras.status}">Recording enabled</div>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-label" th:text="#{security.summary.sensors}">Sensors</div>
+                <div class="summary-value">8/8</div>
+                <div class="summary-trend" th:text="#{security.summary.sensors.status}">All sensors responding</div>
+            </article>
+        </section>
+
+        <section class="content-grid">
+            <div class="panel">
+                <div class="panel-header">
+                    <div>
+                        <h3 th:text="#{security.alarm.title}">Alarm System</h3>
+                        <span th:text="#{security.alarm.subtitle}">Choose your protection mode</span>
+                    </div>
+                </div>
+
+                <div class="scene-list">
+                    <button class="scene-card active"
+                            type="button"
+                            th:data-mode="#{security.alarm.armedStay}"
+                            onclick="setAlarmMode(event, this.dataset.mode)">
+                        <strong th:text="'🛡 ' + #{security.alarm.armedStay}">🛡 Armed Stay</strong>
+                        <span th:text="#{security.alarm.armedStay.details}">Protect doors and windows while you are home</span>
+                    </button>
+
+                    <button class="scene-card"
+                            type="button"
+                            th:data-mode="#{security.alarm.armedAway}"
+                            onclick="setAlarmMode(event, this.dataset.mode)">
+                        <strong th:text="'🚪 ' + #{security.alarm.armedAway}">🚪 Armed Away</strong>
+                        <span th:text="#{security.alarm.armedAway.details}">Full home protection while away</span>
+                    </button>
+
+                    <button class="scene-card"
+                            type="button"
+                            th:data-mode="#{security.alarm.disarmed}"
+                            onclick="setAlarmMode(event, this.dataset.mode)">
+                        <strong th:text="'✅ ' + #{security.alarm.disarmed}">✅ Disarmed</strong>
+                        <span th:text="#{security.alarm.disarmed.details}">Security monitoring without alarm trigger</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="side-stack">
+                <section class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <h3 th:text="#{security.access.title}">Access Control</h3>
+                            <span th:text="#{security.access.subtitle}">Locks and entry points</span>
+                        </div>
+                    </div>
+
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <span class="activity-dot" style="background: var(--success);"></span>
+                            <div>
+                                <strong th:text="#{security.access.frontDoor}">Front Door</strong>
+                                <span th:text="#{security.access.frontDoor.status}">Locked · Auto-lock enabled</span>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <span class="activity-dot" style="background: var(--success);"></span>
+                            <div>
+                                <strong th:text="#{security.access.backDoor}">Back Door</strong>
+                                <span th:text="#{security.access.backDoor.status}">Locked · No activity</span>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <span class="activity-dot" style="background: var(--warning);"></span>
+                            <div>
+                                <strong th:text="#{security.access.garage}">Garage</strong>
+                                <span th:text="#{security.access.garage.status}">Closed · Last opened 1 hour ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <section class="panel room-climate-panel">
+            <div class="panel-header">
+                <div>
+                    <h3 th:text="#{security.cameras.title}">Security Cameras</h3>
+                    <span th:text="#{security.cameras.subtitle}">Live camera and motion status</span>
+                </div>
+            </div>
+
+            <div class="room-climate-grid">
+                <article class="room-climate-card">
+                    <div class="device-icon">📷</div>
+                    <div>
+                        <h4 th:text="#{security.camera.frontYard}">Front Yard</h4>
+                        <p th:text="#{security.camera.frontYard.details}">Recording · Motion detection on</p>
+                    </div>
+                    <span class="room-status comfortable" th:text="#{security.camera.status.online}">Online</span>
+                </article>
+
+                <article class="room-climate-card">
+                    <div class="device-icon">📷</div>
+                    <div>
+                        <h4 th:text="#{security.camera.driveway}">Driveway</h4>
+                        <p th:text="#{security.camera.driveway.details}">Recording · Vehicle detection on</p>
+                    </div>
+                    <span class="room-status comfortable" th:text="#{security.camera.status.online}">Online</span>
+                </article>
+
+                <article class="room-climate-card">
+                    <div class="device-icon">📷</div>
+                    <div>
+                        <h4 th:text="#{security.camera.backGarden}">Back Garden</h4>
+                        <p th:text="#{security.camera.backGarden.details}">Recording · Night vision ready</p>
+                    </div>
+                    <span class="room-status comfortable" th:text="#{security.camera.status.online}">Online</span>
+                </article>
+
+                <article class="room-climate-card">
+                    <div class="device-icon">📷</div>
+                    <div>
+                        <h4 th:text="#{security.camera.hallway}">Hallway</h4>
+                        <p th:text="#{security.camera.hallway.details}">Standby · Privacy mode available</p>
+                    </div>
+                    <span class="room-status warm" th:text="#{security.camera.status.standby}">Standby</span>
+                </article>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+    function setAlarmMode(event, mode) {
+        document.querySelectorAll(".scene-card").forEach(card => {
+            card.classList.remove("active");
+        });
+
+        event.currentTarget.classList.add("active");
+        document.getElementById("alarmSummary").textContent = mode;
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+﻿<!DOCTYPE html>
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{settings.page.title}">Settings - Smart Home</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+
+<body>
+<div class="app">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">⌂</div>
+            <div>
+                <h1 th:text="#{app.brand}">SmartHome</h1>
+                <span th:text="#{app.subtitle}">Control Center</span>
+            </div>
+        </div>
+
+        <nav class="nav">
+            <a class="nav-item" th:href="@{/}" th:text="'🏠 ' + #{nav.dashboard}">🏠 Dashboard</a>
+            <a class="nav-item" th:href="@{/lighting}" th:text="'💡 ' + #{nav.lighting}">💡 Lighting</a>
+            <a class="nav-item" th:href="@{/climate}" th:text="'🌡 ' + #{nav.climate}">🌡 Climate</a>
+            <a class="nav-item" th:href="@{/security}" th:text="'🔒 ' + #{nav.security}">🔒 Security</a>
+            <a class="nav-item active" th:href="@{/settings}" th:text="'⚙ ' + #{nav.settings}">⚙ Settings</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+        <section class="topbar">
+            <div>
+                <h2 th:text="#{settings.page.heading}">Settings</h2>
+                <p th:text="#{settings.page.description}">Manage preferences, automation, notifications, and system behavior.</p>
+            </div>
+
+            <div class="topbar-actions">
+                <div class="language-switch">
+                    <span class="language-title" th:text="#{language.label}">Language</span>
+
+                    <a class="language-button"
+                       th:href="@{/settings(lang='en')}"
+                       th:classappend="${#locale.language == 'en'} ? ' active' : ''">
+                        EN
+                    </a>
+
+                    <a class="language-button"
+                       th:href="@{/settings(lang='bg')}"
+                       th:classappend="${#locale.language == 'bg'} ? ' active' : ''">
+                        BG
+                    </a>
+                </div>
+
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    <span th:text="#{topbar.online}">System online</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="summary-grid">
+            <article class="summary-card">
+                <div class="summary-label" th:text="#{settings.summary.profile}">Profile</div>
+                <div class="summary-value" th:text="#{settings.summary.profile.value}">Home</div>
+                <div class="summary-trend" th:text="#{settings.summary.profile.status}">Default household profile</div>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-label" th:text="#{settings.summary.automation}">Automation</div>
+                <div class="summary-value">12</div>
+                <div class="summary-trend" th:text="#{settings.summary.automation.status}">Active smart rules</div>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-label" th:text="#{settings.summary.notifications}">Notifications</div>
+                <div class="summary-value" th:text="#{settings.summary.notifications.value}">On</div>
+                <div class="summary-trend" th:text="#{settings.summary.notifications.status}">Important alerts enabled</div>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-label" th:text="#{settings.summary.backup}">Backup</div>
+                <div class="summary-value" th:text="#{settings.summary.backup.value}">Daily</div>
+                <div class="summary-trend" th:text="#{settings.summary.backup.status}">Configuration sync active</div>
+            </article>
+        </section>
+
+        <section class="content-grid">
+            <div class="panel">
+                <div class="panel-header">
+                    <div>
+                        <h3 th:text="#{settings.preferences.title}">Preferences</h3>
+                        <span th:text="#{settings.preferences.subtitle}">Customize your smart home experience</span>
+                    </div>
+                </div>
+
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <span class="activity-dot" style="background: var(--success);"></span>
+                        <div>
+                            <strong th:text="#{settings.preference.language}">Language</strong>
+                            <span th:text="#{settings.preference.language.details}">Choose the display language for the dashboard</span>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <span class="activity-dot" style="background: var(--success);"></span>
+                        <div>
+                            <strong th:text="#{settings.preference.theme}">Theme</strong>
+                            <span th:text="#{settings.preference.theme.details}">Use the current visual style across all pages</span>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <span class="activity-dot" style="background: var(--warning);"></span>
+                        <div>
+                            <strong th:text="#{settings.preference.units}">Units</strong>
+                            <span th:text="#{settings.preference.units.details}">Temperature, energy, and measurement preferences</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-stack">
+                <section class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <h3 th:text="#{settings.notifications.title}">Notifications</h3>
+                            <span th:text="#{settings.notifications.subtitle}">Control alert behavior</span>
+                        </div>
+                    </div>
+
+                    <div class="scene-list">
+                        <button class="scene-card active" type="button">
+                            <strong th:text="'🔔 ' + #{settings.notification.security}">🔔 Security alerts</strong>
+                            <span th:text="#{settings.notification.security.details}">Door, camera, and alarm notifications</span>
+                        </button>
+
+                        <button class="scene-card active" type="button">
+                            <strong th:text="'⚡ ' + #{settings.notification.energy}">⚡ Energy alerts</strong>
+                            <span th:text="#{settings.notification.energy.details}">Usage peaks and saving opportunities</span>
+                        </button>
+
+                        <button class="scene-card" type="button">
+                            <strong th:text="'🌡 ' + #{settings.notification.climate}">🌡 Climate alerts</strong>
+                            <span th:text="#{settings.notification.climate.details}">Temperature and humidity changes</span>
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <section class="panel room-climate-panel">
+            <div class="panel-header">
+                <div>
+                    <h3 th:text="#{settings.automation.title}">Automation Rules</h3>
+                    <span th:text="#{settings.automation.subtitle}">Common smart home routines</span>
+                </div>
+            </div>
+
+            <div class="room-climate-grid">
+                <article class="room-climate-card">
+                    <div class="device-icon">🌙</div>
+                    <div>
+                        <h4 th:text="#{settings.automation.nightMode}">Night Mode</h4>
+                        <p th:text="#{settings.automation.nightMode.details}">Dim lights, lock doors, and lower temperature</p>
+                    </div>
+                    <span class="room-status comfortable" th:text="#{settings.status.enabled}">Enabled</span>
+                </article>
+
+                <article class="room-climate-card">
+                    <div class="device-icon">🚪</div>
+                    <div>
+                        <h4 th:text="#{settings.automation.awayMode}">Away Mode</h4>
+                        <p th:text="#{settings.automation.awayMode.details}">Arm security and reduce energy usage</p>
+                    </div>
+                    <span class="room-status comfortable" th:text="#{settings.status.enabled}">Enabled</span>
+                </article>
+
+                <article class="room-climate-card">
+                    <div class="device-icon">☀️</div>
+                    <div>
+                        <h4 th:text="#{settings.automation.morningRoutine}">Morning Routine</h4>
+                        <p th:text="#{settings.automation.morningRoutine.details}">Raise lights and restore comfort temperature</p>
+                    </div>
+                    <span class="room-status warm" th:text="#{settings.status.scheduled}">Scheduled</span>
+                </article>
+
+                <article class="room-climate-card">
+                    <div class="device-icon">🧹</div>
+                    <div>
+                        <h4 th:text="#{settings.automation.cleaning}">Cleaning Schedule</h4>
+                        <p th:text="#{settings.automation.cleaning.details}">Run vacuum when nobody is home</p>
+                    </div>
+                    <span class="room-status humid" th:text="#{settings.status.paused}">Paused</span>
+                </article>
+            </div>
+        </section>
+    </main>
+</div>
+</body>
+</html>

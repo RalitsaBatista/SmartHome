@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{climate.page.title}">Climate - Smart Home</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+
+<body>
+<div class="app">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">⌂</div>
+            <div>
+                <h1 th:text="#{app.brand}">SmartHome</h1>
+                <span th:text="#{app.subtitle}">Control Center</span>
+            </div>
+        </div>
+
+        <nav class="nav">
+            <a class="nav-item" th:href="@{/}" th:text="'🏠 ' + #{nav.dashboard}">🏠 Dashboard</a>
+            <a class="nav-item" th:href="@{/lighting}" th:text="'💡 ' + #{nav.lighting}">💡 Lighting</a>
+            <a class="nav-item active" th:href="@{/climate}" th:text="'🌡 ' + #{nav.climate}">🌡 Climate</a>
+            <a class="nav-item" th:href="@{/security}" th:text="'🔒 ' + #{nav.security}">🔒 Security</a>
+            <a class="nav-item" th:href="@{/settings}"  th:text="'⚙ ' + #{nav.settings}">⚙ Settings</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+        <section class="topbar">
+            <div>
+                <h2 th:text="#{climate.page.heading}">Climate</h2>
+                <p th:text="#{climate.page.description}">Control temperature, humidity, fan speed, and room comfort.</p>
+            </div>
+
+            <div class="topbar-actions">
+                <div class="language-switch">
+                    <span class="language-title" th:text="#{language.label}">Language</span>
+
+                    <a class="language-button"
+                       th:href="@{/climate(lang='en')}"
+                       th:classappend="${#locale.language == 'en'} ? ' active' : ''">
+                        EN
+                    </a>
+
+                    <a class="language-button"
+                       th:href="@{/climate(lang='bg')}"
+                       th:classappend="${#locale.language == 'bg'} ? ' active' : ''">
+                        BG
+                    </a>
+                </div>
+
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    <span th:text="#{topbar.online}">System online</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="summary-grid">
+            <article class="summary-card">
+                <div class="summary-label" th:text="#{climate.summary.currentTemperature}">Current Temperature</div>
+                <div class="summary-value"><span id="currentTemperature">22</span>°C</div>
+                <div class="summary-trend" th:text="#{climate.summary.currentTemperature.status}">Comfortable range</div>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-label" th:text="#{climate.summary.targetTemperature}">Target Temperature</div>
+                <div class="summary-value"><span id="targetTemperatureSummary">22</span>°C</div>
+                <div class="summary-trend" th:text="#{climate.summary.targetTemperature.status}">Thermostat target</div>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-label" th:text="#{climate.summary.humidity}">Humidity</div>
+                <div class="summary-value"><span id="humidityValue">48</span>%</div>
+                <div class="summary-trend" th:text="#{climate.summary.humidity.status}">Healthy range</div>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-label" th:text="#{climate.summary.hvacMode}">HVAC Mode</div>
+                <div class="summary-value climate-mode-summary" id="activeModeSummary" th:text="#{climate.mode.auto}">Auto</div>
+                <div class="summary-trend" th:text="#{climate.summary.hvacMode.status}">Smart adjustment enabled</div>
+            </article>
+        </section>
+
+        <section class="content-grid climate-layout">
+            <div class="panel climate-control-panel">
+                <div class="panel-header">
+                    <div>
+                        <h3 th:text="#{climate.thermostat.title}">Thermostat</h3>
+                        <span th:text="#{climate.thermostat.subtitle}">Adjust your home temperature</span>
+                    </div>
+
+                    <span class="climate-status-badge"
+                          id="systemStatus"
+                          th:data-eco-saving="#{climate.status.ecoSaving}"
+                          th:data-heating-active="#{climate.status.heatingActive}"
+                          th:data-cooling-active="#{climate.status.coolingActive}"
+                          th:data-stable="#{climate.status.stable}"
+                          th:text="#{climate.status.heatingStandby}">
+                        Heating standby
+                    </span>
+                </div>
+
+                <div class="climate-thermostat">
+                    <div class="climate-ring">
+                        <div class="climate-ring-inner">
+                            <span id="targetTemperature">22</span>
+                            <small>°C</small>
+                        </div>
+                    </div>
+
+                    <div class="climate-actions">
+                        <button class="climate-round-button" type="button" onclick="changeTargetTemperature(-1)">−</button>
+                        <button class="climate-round-button" type="button" onclick="changeTargetTemperature(1)">+</button>
+                    </div>
+
+                    <div class="temperature-range">
+                        <span>16°C</span>
+                        <input id="temperatureSlider"
+                               class="temperature-slider"
+                               type="range"
+                               min="16"
+                               max="30"
+                               value="22"
+                               oninput="setTargetTemperature(this.value)">
+                        <span>30°C</span>
+                    </div>
+                </div>
+
+                <div class="climate-modes">
+                    <button class="mode-card active"
+                            type="button"
+                            th:data-mode="#{climate.mode.auto}"
+                            onclick="setClimateMode(event, this.dataset.mode)">
+                        <strong th:text="'⚙ ' + #{climate.mode.auto}">⚙ Auto</strong>
+                        <span th:text="#{climate.mode.auto.description}">Balanced comfort</span>
+                    </button>
+
+                    <button class="mode-card"
+                            type="button"
+                            th:data-mode="#{climate.mode.heat}"
+                            onclick="setClimateMode(event, this.dataset.mode)">
+                        <strong th:text="'🔥 ' + #{climate.mode.heat}">🔥 Heat</strong>
+                        <span th:text="#{climate.mode.heat.description}">Warm the home</span>
+                    </button>
+
+                    <button class="mode-card"
+                            type="button"
+                            th:data-mode="#{climate.mode.cool}"
+                            onclick="setClimateMode(event, this.dataset.mode)">
+                        <strong th:text="'❄ ' + #{climate.mode.cool}">❄ Cool</strong>
+                        <span th:text="#{climate.mode.cool.description}">Lower temperature</span>
+                    </button>
+
+                    <button class="mode-card"
+                            type="button"
+                            th:data-mode="#{climate.mode.eco}"
+                            onclick="setClimateMode(event, this.dataset.mode)">
+                        <strong th:text="'🌿 ' + #{climate.mode.eco}">🌿 Eco</strong>
+                        <span th:text="#{climate.mode.eco.description}">Save energy</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="side-stack">
+                <section class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <h3 th:text="#{climate.fan.title}">Fan Speed</h3>
+                            <span th:text="#{climate.fan.subtitle}">Air circulation control</span>
+                        </div>
+                    </div>
+
+                    <div class="fan-control">
+                        <div class="fan-icon" id="fanIcon">🌀</div>
+
+                        <label class="brightness-label">
+                            <span th:text="#{climate.fan.speed}">Speed</span>
+                            <span class="brightness-value"><span id="fanSpeedValue">2</span>/5</span>
+                        </label>
+
+                        <input id="fanSpeedSlider"
+                               class="brightness-slider"
+                               type="range"
+                               min="0"
+                               max="5"
+                               value="2"
+                               oninput="updateFanSpeed(this.value)">
+
+                        <button class="scene-button fan-auto-button"
+                                type="button"
+                                onclick="setAutoFan()"
+                                th:text="#{climate.fan.auto}">
+                            Auto Fan
+                        </button>
+                    </div>
+                </section>
+
+                <section class="panel" style="margin-top: 24px;">
+                    <div class="panel-header">
+                        <div>
+                            <h3 th:text="#{climate.airQuality.title}">Air Quality</h3>
+                            <span th:text="#{climate.airQuality.subtitle}">Indoor environment status</span>
+                        </div>
+                    </div>
+
+                    <div class="air-quality-card">
+                        <div class="air-quality-score">92</div>
+                        <div>
+                            <strong th:text="#{climate.airQuality.excellent}">Excellent</strong>
+                            <span th:text="#{climate.airQuality.details}">Low particles · Fresh airflow</span>
+                        </div>
+                    </div>
+
+                    <div class="climate-metric-list">
+                        <div class="climate-metric">
+                            <span th:text="#{climate.airQuality.co2}">CO₂</span>
+                            <strong>620 ppm</strong>
+                        </div>
+                        <div class="climate-metric">
+                            <span th:text="#{climate.airQuality.particles}">Particles</span>
+                            <strong th:text="#{climate.airQuality.particles.low}">Low</strong>
+                        </div>
+                        <div class="climate-metric">
+                            <span th:text="#{climate.airQuality.filter}">Filter</span>
+                            <strong>86%</strong>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <section class="panel room-climate-panel">
+            <div class="panel-header">
+                <div>
+                    <h3 th:text="#{climate.rooms.title}">Room Temperatures</h3>
+                    <span th:text="#{climate.rooms.subtitle}">Monitor comfort across your home</span>
+                </div>
+            </div>
+
+            <div class="room-climate-grid">
+                <article class="room-climate-card">
+                    <div class="device-icon">🛋️</div>
+                    <div>
+                        <h4 th:text="#{climate.room.livingRoom}">Living Room</h4>
+                        <p th:text="#{climate.room.livingRoom.details}">22.4°C · 47% humidity</p>
+                    </div>
+                    <span class="room-status comfortable" th:text="#{climate.room.status.comfort}">Comfort</span>
+                </article>
+
+                <article class="room-climate-card">
+                    <div class="device-icon">🍽️</div>
+                    <div>
+                        <h4 th:text="#{climate.room.kitchen}">Kitchen</h4>
+                        <p th:text="#{climate.room.kitchen.details}">23.1°C · 45% humidity</p>
+                    </div>
+                    <span class="room-status warm" th:text="#{climate.room.status.warm}">Warm</span>
+                </article>
+
+                <article class="room-climate-card">
+                    <div class="device-icon">🛏️</div>
+                    <div>
+                        <h4 th:text="#{climate.room.bedroom}">Bedroom</h4>
+                        <p th:text="#{climate.room.bedroom.details}">20.8°C · 50% humidity</p>
+                    </div>
+                    <span class="room-status comfortable" th:text="#{climate.room.status.comfort}">Comfort</span>
+                </article>
+
+                <article class="room-climate-card">
+                    <div class="device-icon">🚿</div>
+                    <div>
+                        <h4 th:text="#{climate.room.bathroom}">Bathroom</h4>
+                        <p th:text="#{climate.room.bathroom.details}">24.0°C · 58% humidity</p>
+                    </div>
+                    <span class="room-status humid" th:text="#{climate.room.status.humid}">Humid</span>
+                </article>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+    let targetTemperature = 22;
+
+    function changeTargetTemperature(amount) {
+        setTargetTemperature(targetTemperature + amount);
+    }
+
+    function setTargetTemperature(value) {
+        targetTemperature = Number(value);
+
+        if (targetTemperature < 16) {
+            targetTemperature = 16;
+        }
+
+        if (targetTemperature > 30) {
+            targetTemperature = 30;
+        }
+
+        document.getElementById("targetTemperature").textContent = targetTemperature;
+        document.getElementById("targetTemperatureSummary").textContent = targetTemperature;
+        document.getElementById("temperatureSlider").value = targetTemperature;
+
+        updateSystemStatus();
+    }
+
+    function setClimateMode(event, mode) {
+        document.querySelectorAll(".mode-card").forEach(card => {
+            card.classList.remove("active");
+        });
+
+        event.currentTarget.classList.add("active");
+        document.getElementById("activeModeSummary").textContent = mode;
+
+        updateSystemStatus();
+    }
+
+    function updateSystemStatus() {
+        const currentTemperature = Number(document.getElementById("currentTemperature").textContent);
+        const activeMode = document.getElementById("activeModeSummary").textContent;
+        const systemStatus = document.getElementById("systemStatus");
+        const ecoMode = document.querySelector(".mode-card:nth-child(4)").dataset.mode;
+
+        if (activeMode === ecoMode) {
+            systemStatus.textContent = systemStatus.dataset.ecoSaving;
+            return;
+        }
+
+        if (targetTemperature > currentTemperature) {
+            systemStatus.textContent = systemStatus.dataset.heatingActive;
+        } else if (targetTemperature < currentTemperature) {
+            systemStatus.textContent = systemStatus.dataset.coolingActive;
+        } else {
+            systemStatus.textContent = systemStatus.dataset.stable;
+        }
+    }
+
+    function updateFanSpeed(value) {
+        document.getElementById("fanSpeedValue").textContent = value;
+
+        const fanIcon = document.getElementById("fanIcon");
+
+        if (Number(value) === 0) {
+            fanIcon.textContent = "⏸";
+        } else {
+            fanIcon.textContent = "🌀";
+        }
+    }
+
+    function setAutoFan() {
+        document.getElementById("fanSpeedSlider").value = 3;
+        updateFanSpeed(3);
+    }
+
+    updateSystemStatus();
+</script>
+</body>
+</html>

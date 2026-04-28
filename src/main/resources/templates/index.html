@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{app.title}">Smart Home Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+
+</head>
+
+<body>
+<div class="app">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">⌂</div>
+            <div>
+                <h1 th:text="#{app.brand}">SmartHome</h1>
+                <span th:text="#{app.subtitle}">Control Center</span>
+            </div>
+        </div>
+
+        <nav class="nav">
+            <a class="nav-item active" href="#" th:text="'🏠 ' + #{nav.dashboard}">🏠 Dashboard</a>
+            <a class="nav-item" th:href="@{/lighting}" th:text="'💡 ' + #{nav.lighting}">💡 Lighting</a>
+            <a class="nav-item" th:href="@{/climate}" th:text="'🌡 ' + #{nav.climate}">🌡 Climate</a>
+            <a class="nav-item" th:href="@{/security}" th:text="'🔒 ' + #{nav.security}">🔒 Security</a>
+            <a class="nav-item" th:href="@{/settings}"  th:text="'⚙ ' + #{nav.settings}">⚙ Settings</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+        <section class="topbar">
+            <div>
+                <h2 th:text="#{topbar.welcome}">Welcome home</h2>
+                <p th:text="#{topbar.description}">Monitor and control your connected devices from one place.</p>
+            </div>
+
+            <div class="topbar-actions">
+                <div class="language-switch">
+                    <span class="language-title" th:text="#{language.label}">Language</span>
+
+                    <a class="language-button"
+                       th:href="@{/(lang='en')}"
+                       th:classappend="${#locale.language == 'en'} ? ' active' : ''">
+                        EN
+                    </a>
+
+                    <a class="language-button"
+                       th:href="@{/(lang='bg')}"
+                       th:classappend="${#locale.language == 'bg'} ? ' active' : ''">
+                        BG
+                    </a>
+                </div>
+
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    <span th:text="#{topbar.online}">System online</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="summary-grid">
+            <article class="summary-card">
+                <div class="summary-label">Temperature</div>
+                <div class="summary-value"><span id="summaryTemperature">22</span>°C</div>
+                <div class="summary-trend">Comfort mode active</div>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-label">Humidity</div>
+                <div class="summary-value">48%</div>
+                <div class="summary-trend">Healthy range</div>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-label">Energy Usage</div>
+                <div class="summary-value">3.4 kW</div>
+                <div class="summary-trend">12% lower today</div>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-label">Active Devices</div>
+                <div class="summary-value"><span id="activeDevices">3</span>/6</div>
+                <div class="summary-trend">All responding</div>
+            </article>
+        </section>
+
+        <section class="content-grid">
+            <div class="panel">
+                <div class="panel-header">
+                    <div>
+                        <h3>Devices</h3>
+                        <span>Quick controls for your home</span>
+                    </div>
+                </div>
+
+                <div class="devices-grid">
+                    <article class="device-card">
+                        <div class="device-top">
+                            <div class="device-icon">💡</div>
+                            <label class="switch">
+                                <input class="device-toggle" type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <h4>Living Room Lights</h4>
+                        <p>Warm white · 72% brightness</p>
+                    </article>
+
+                    <article class="device-card">
+                        <div class="device-top">
+                            <div class="device-icon">📺</div>
+                            <label class="switch">
+                                <input class="device-toggle" type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <h4>Media Center</h4>
+                        <p>Standby mode</p>
+                    </article>
+
+                    <article class="device-card">
+                        <div class="device-top">
+                            <div class="device-icon">🔒</div>
+                            <label class="switch">
+                                <input class="device-toggle" type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <h4>Front Door Lock</h4>
+                        <p>Locked · Last checked 2 min ago</p>
+                    </article>
+
+                    <article class="device-card">
+                        <div class="device-top">
+                            <div class="device-icon">🧹</div>
+                            <label class="switch">
+                                <input class="device-toggle" type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <h4>Robot Vacuum</h4>
+                        <p>Docked · Battery 91%</p>
+                    </article>
+
+                    <article class="device-card">
+                        <div class="device-top">
+                            <div class="device-icon">📷</div>
+                            <label class="switch">
+                                <input class="device-toggle" type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <h4>Security Camera</h4>
+                        <p>Recording · Motion detection on</p>
+                    </article>
+
+                    <article class="device-card">
+                        <div class="device-top">
+                            <div class="device-icon">🌿</div>
+                            <label class="switch">
+                                <input class="device-toggle" type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <h4>Garden Sprinklers</h4>
+                        <p>Next run tomorrow 06:30</p>
+                    </article>
+                </div>
+            </div>
+
+            <div class="side-stack">
+                <section class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <h3>Climate</h3>
+                            <span>Thermostat control</span>
+                        </div>
+                    </div>
+
+                    <div class="temperature-box">
+                        <div>
+                            <div class="temperature-ring">
+                                <div class="temperature-value">
+                                    <span id="temperatureValue">22</span>°
+                                </div>
+                            </div>
+
+                            <div class="temperature-actions">
+                                <button class="round-button" type="button" onclick="changeTemperature(-1)">−</button>
+                                <button class="round-button" type="button" onclick="changeTemperature(1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="panel" style="margin-top: 24px;">
+                    <div class="panel-header">
+                        <div>
+                            <h3>Recent Activity</h3>
+                            <span>Latest home events</span>
+                        </div>
+                    </div>
+
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <span class="activity-dot"></span>
+                            <div>
+                                <strong>Front door locked</strong>
+                                <span>2 minutes ago</span>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <span class="activity-dot" style="background: var(--success);"></span>
+                            <div>
+                                <strong>Living room lights turned on</strong>
+                                <span>15 minutes ago</span>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <span class="activity-dot" style="background: var(--warning);"></span>
+                            <div>
+                                <strong>Energy usage peaked</strong>
+                                <span>42 minutes ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+    let temperature = 22;
+
+    function changeTemperature(amount) {
+        temperature += amount;
+
+        if (temperature < 16) {
+            temperature = 16;
+        }
+
+        if (temperature > 30) {
+            temperature = 30;
+        }
+
+        document.getElementById("temperatureValue").textContent = temperature;
+        document.getElementById("summaryTemperature").textContent = temperature;
+    }
+
+    function updateActiveDevices() {
+        const toggles = document.querySelectorAll(".device-toggle");
+        const activeCount = Array.from(toggles).filter(toggle => toggle.checked).length;
+
+        document.getElementById("activeDevices").textContent = activeCount;
+    }
+
+    document.querySelectorAll(".device-toggle").forEach(toggle => {
+        toggle.addEventListener("change", updateActiveDevices);
+    });
+
+    updateActiveDevices();
+</script>
+</body>
+</html>

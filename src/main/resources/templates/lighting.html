@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{lighting.page.title}">Lighting - Smart Home</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+
+<body>
+<div class="app">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">⌂</div>
+            <div>
+                <h1 th:text="#{app.brand}">SmartHome</h1>
+                <span th:text="#{app.subtitle}">Control Center</span>
+            </div>
+        </div>
+
+        <nav class="nav">
+            <a class="nav-item" th:href="@{/}" th:text="'🏠 ' + #{nav.dashboard}">🏠 Dashboard</a>
+            <a class="nav-item active" th:href="@{/lighting}" th:text="'💡 ' + #{nav.lighting}">💡 Lighting</a>
+            <a class="nav-item" th:href="@{/climate}" th:text="'🌡 ' + #{nav.climate}">🌡 Climate</a>
+            <a class="nav-item" th:href="@{/security}" th:text="'🔒 ' + #{nav.security}">🔒 Security</a>
+            <a class="nav-item" th:href="@{/settings}"  th:text="'⚙ ' + #{nav.settings}">⚙ Settings</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+        <section class="topbar">
+            <div>
+                <h2 th:text="#{lighting.page.heading}">Lighting</h2>
+                <p th:text="#{lighting.page.description}">Control room lights, brightness, and lighting modes.</p>
+            </div>
+
+            <div class="topbar-actions">
+                <div class="language-switch">
+                    <span class="language-title" th:text="#{language.label}">Language</span>
+
+                    <a class="language-button"
+                       th:href="@{/lighting(lang='en')}"
+                       th:classappend="${#locale.language == 'en'} ? ' active' : ''">
+                        EN
+                    </a>
+
+                    <a class="language-button"
+                       th:href="@{/lighting(lang='bg')}"
+                       th:classappend="${#locale.language == 'bg'} ? ' active' : ''">
+                        BG
+                    </a>
+                </div>
+
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    <span th:text="#{topbar.online}">System online</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="summary-grid">
+            <article class="summary-card">
+                <div class="summary-label" th:text="#{lighting.summary.lightsOn}">Lights On</div>
+                <div class="summary-value"><span id="lightsOnCount">3</span>/6</div>
+                <div class="summary-trend" th:text="#{lighting.summary.lightsOn.status}">Current active lights</div>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-label" th:text="#{lighting.summary.averageBrightness}">Average Brightness</div>
+                <div class="summary-value"><span id="averageBrightness">62</span>%</div>
+                <div class="summary-trend" th:text="#{lighting.summary.averageBrightness.status}">Across active lights</div>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-label" th:text="#{lighting.summary.mode}">Mode</div>
+                <div class="summary-value" id="currentMode" th:text="#{lighting.scene.relax}">Relax</div>
+                <div class="summary-trend" th:text="#{lighting.summary.mode.status}">Lighting scene active</div>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-label" th:text="#{lighting.summary.energy}">Energy</div>
+                <div class="summary-value" th:text="#{lighting.summary.energy.value}">0.8 kW</div>
+                <div class="summary-trend" th:text="#{lighting.summary.energy.status}">Lighting usage now</div>
+            </article>
+        </section>
+
+        <section class="content-grid lighting-layout">
+            <div class="panel">
+                <div class="panel-header">
+                    <div>
+                        <h3 th:text="#{lighting.rooms.title}">Room Lighting</h3>
+                        <span th:text="#{lighting.rooms.subtitle}">Manage lights room by room</span>
+                    </div>
+
+                    <button class="scene-button" type="button" onclick="turnOffAllLights()" th:text="#{lighting.rooms.turnOffAll}">
+                        Turn all off
+                    </button>
+                </div>
+
+                <div class="lighting-grid">
+                    <article class="light-card">
+                        <div class="light-card-top">
+                            <div class="device-icon">🛋️</div>
+                            <label class="switch">
+                                <input class="light-toggle" type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <h4 th:text="#{lighting.room.livingRoom}">Living Room</h4>
+                        <p th:text="#{lighting.room.livingRoom.details}">Warm white ambience</p>
+
+                        <label class="brightness-label">
+                            <span th:text="#{lighting.brightness}">Brightness</span>
+                            <span class="brightness-value">72%</span>
+                        </label>
+                        <input class="brightness-slider" type="range" min="0" max="100" value="72">
+                    </article>
+
+                    <article class="light-card">
+                        <div class="light-card-top">
+                            <div class="device-icon">🍽️</div>
+                            <label class="switch">
+                                <input class="light-toggle" type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <h4 th:text="#{lighting.room.kitchen}">Kitchen</h4>
+                        <p th:text="#{lighting.room.kitchen.details}">Bright cooking lights</p>
+
+                        <label class="brightness-label">
+                            <span th:text="#{lighting.brightness}">Brightness</span>
+                            <span class="brightness-value">85%</span>
+                        </label>
+                        <input class="brightness-slider" type="range" min="0" max="100" value="85">
+                    </article>
+
+                    <article class="light-card">
+                        <div class="light-card-top">
+                            <div class="device-icon">🛏️</div>
+                            <label class="switch">
+                                <input class="light-toggle" type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <h4 th:text="#{lighting.room.bedroom}">Bedroom</h4>
+                        <p th:text="#{lighting.room.bedroom.details}">Soft night lighting</p>
+
+                        <label class="brightness-label">
+                            <span th:text="#{lighting.brightness}">Brightness</span>
+                            <span class="brightness-value">35%</span>
+                        </label>
+                        <input class="brightness-slider" type="range" min="0" max="100" value="35">
+                    </article>
+
+                    <article class="light-card">
+                        <div class="light-card-top">
+                            <div class="device-icon">🚿</div>
+                            <label class="switch">
+                                <input class="light-toggle" type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <h4 th:text="#{lighting.room.bathroom}">Bathroom</h4>
+                        <p th:text="#{lighting.room.bathroom.details}">Neutral white lighting</p>
+
+                        <label class="brightness-label">
+                            <span th:text="#{lighting.brightness}">Brightness</span>
+                            <span class="brightness-value">50%</span>
+                        </label>
+                        <input class="brightness-slider" type="range" min="0" max="100" value="50">
+                    </article>
+
+                    <article class="light-card">
+                        <div class="light-card-top">
+                            <div class="device-icon">🌿</div>
+                            <label class="switch">
+                                <input class="light-toggle" type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <h4 th:text="#{lighting.room.garden}">Garden</h4>
+                        <p th:text="#{lighting.room.garden.details}">Outdoor security lights</p>
+
+                        <label class="brightness-label">
+                            <span th:text="#{lighting.brightness}">Brightness</span>
+                            <span class="brightness-value">60%</span>
+                        </label>
+                        <input class="brightness-slider" type="range" min="0" max="100" value="60">
+                    </article>
+
+                    <article class="light-card">
+                        <div class="light-card-top">
+                            <div class="device-icon">🚪</div>
+                            <label class="switch">
+                                <input class="light-toggle" type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <h4 th:text="#{lighting.room.hallway}">Hallway</h4>
+                        <p th:text="#{lighting.room.hallway.details}">Motion-assisted lighting</p>
+
+                        <label class="brightness-label">
+                            <span th:text="#{lighting.brightness}">Brightness</span>
+                            <span class="brightness-value">45%</span>
+                        </label>
+                        <input class="brightness-slider" type="range" min="0" max="100" value="45">
+                    </article>
+                </div>
+            </div>
+
+            <div class="side-stack">
+                <section class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <h3>Scenes</h3>
+                            <span>Apply lighting presets</span>
+                        </div>
+                    </div>
+
+                    <div class="scene-list">
+                        <button class="scene-card active" type="button" onclick="setScene('Relax', 55)">
+                            <strong>🌙 Relax</strong>
+                            <span>Soft warm lighting</span>
+                        </button>
+
+                        <button class="scene-card" type="button" onclick="setScene('Focus', 90)">
+                            <strong>💻 Focus</strong>
+                            <span>Bright productive setup</span>
+                        </button>
+
+                        <button class="scene-card" type="button" onclick="setScene('Movie', 25)">
+                            <strong>🎬 Movie</strong>
+                            <span>Dim cinema atmosphere</span>
+                        </button>
+
+                        <button class="scene-card" type="button" onclick="setScene('Night', 15)">
+                            <strong>✨ Night</strong>
+                            <span>Low guiding lights</span>
+                        </button>
+                    </div>
+                </section>
+
+                <section class="panel" style="margin-top: 24px;">
+                    <div class="panel-header">
+                        <div>
+                            <h3 th:text="#{lighting.scenes.title}">Scenes</h3>
+                            <span th:text="#{lighting.scenes.subtitle}">Apply lighting presets</span>
+                        </div>
+                    </div>
+
+                    <div class="scene-list">
+                        <button class="scene-card active"
+                                type="button"
+                                th:data-scene-name="#{lighting.scene.relax}"
+                                onclick="setScene(this.dataset.sceneName, 55)">
+                            <strong th:text="'🌙 ' + #{lighting.scene.relax}">🌙 Relax</strong>
+                            <span th:text="#{lighting.scene.relax.details}">Soft warm lighting</span>
+                        </button>
+                        <button class="scene-card"
+                                type="button"
+                                th:data-scene-name="#{lighting.scene.focus}"
+                                onclick="setScene(this.dataset.sceneName, 90)">
+                            <strong th:text="'💻 ' + #{lighting.scene.focus}">💻 Focus</strong>
+                            <span th:text="#{lighting.scene.focus.details}">Bright productive setup</span>
+                        </button>
+                        <button class="scene-card"
+                                type="button"
+                                th:data-scene-name="#{lighting.scene.movie}"
+                                onclick="setScene(this.dataset.sceneName, 25)">
+                            <strong th:text="'🎬 ' + #{lighting.scene.movie}">🎬 Movie</strong>
+                            <span th:text="#{lighting.scene.movie.details}">Dim cinema atmosphere</span>
+                        </button>
+
+                        <button class="scene-card"
+                                type="button"
+                                th:data-scene-name="#{lighting.scene.night}"
+                                onclick="setScene(this.dataset.sceneName, 15)">
+                            <strong th:text="'✨ ' + #{lighting.scene.night}">✨ Night</strong>
+                            <span th:text="#{lighting.scene.night.details}">Low guiding lights</span>
+                        </button>
+                    </div>
+                    <div class="panel-header">
+                        <div>
+                            <h3 th:text="#{lighting.tips.title}">Lighting Tips</h3>
+                            <span th:text="#{lighting.tips.subtitle}">Small automations help a lot</span>
+                        </div>
+                    </div>
+
+
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <span class="activity-dot"></span>
+                            <div>
+                                <strong th:text="#{lighting.tip.lowerBrightness}">Use lower brightness at night</strong>
+                                <span th:text="#{lighting.tip.lowerBrightness.details}">It reduces eye strain and saves energy.</span>
+                            </div>
+                        </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <span class="activity-dot" style="background: var(--success);"></span>
+                            <div>
+                                <strong th:text="#{lighting.tip.groupRooms}">Group lights by room</strong>
+                                <span th:text="#{lighting.tip.groupRooms.details}">This makes automation easier later.</span>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <span class="activity-dot" style="background: var(--warning);"></span>
+                            <div>
+                                <strong th:text="#{lighting.tip.motionRules}">Add motion rules next</strong>
+                                <span th:text="#{lighting.tip.motionRules.details}">Great for hallways, entrances, and garden lights.</span>
+                            </div>
+                        </div>
+                </section>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+    function updateLightingSummary() {
+        const toggles = document.querySelectorAll(".light-toggle");
+        const sliders = document.querySelectorAll(".brightness-slider");
+
+        const activeLights = Array.from(toggles).filter(toggle => toggle.checked).length;
+        document.getElementById("lightsOnCount").textContent = activeLights;
+
+        let totalBrightness = 0;
+
+        sliders.forEach(slider => {
+            totalBrightness += Number(slider.value);
+        });
+
+        const averageBrightness = Math.round(totalBrightness / sliders.length);
+        document.getElementById("averageBrightness").textContent = averageBrightness;
+    }
+
+    function updateBrightnessLabels() {
+        document.querySelectorAll(".light-card").forEach(card => {
+            const slider = card.querySelector(".brightness-slider");
+            const value = card.querySelector(".brightness-value");
+
+            value.textContent = `${slider.value}%`;
+        });
+    }
+
+    function turnOffAllLights() {
+        document.querySelectorAll(".light-toggle").forEach(toggle => {
+            toggle.checked = false;
+        });
+
+        updateLightingSummary();
+    }
+
+    function setScene(sceneName, brightness) {
+        document.getElementById("currentMode").textContent = sceneName;
+
+        document.querySelectorAll(".scene-card").forEach(card => {
+            card.classList.remove("active");
+        });
+
+        event.currentTarget.classList.add("active");
+
+        document.querySelectorAll(".light-toggle").forEach(toggle => {
+            toggle.checked = true;
+        });
+
+        document.querySelectorAll(".brightness-slider").forEach(slider => {
+            slider.value = brightness;
+        });
+
+        updateBrightnessLabels();
+        updateLightingSummary();
+    }
+
+    document.querySelectorAll(".light-toggle").forEach(toggle => {
+        toggle.addEventListener("change", updateLightingSummary);
+    });
+
+    document.querySelectorAll(".brightness-slider").forEach(slider => {
+        slider.addEventListener("input", () => {
+            updateBrightnessLabels();
+            updateLightingSummary();
+        });
+    });
+
+    updateBrightnessLabels();
+    updateLightingSummary();
+</script>
+</body>
+</html>
