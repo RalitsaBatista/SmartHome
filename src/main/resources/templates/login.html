@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{login.page.title}">LOGIN - Smart Home</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <style>
+        .login-error-text {
+                display: none;
+                margin: 0 0 1rem;
+                color: #ef4444;
+                font-size: 0.95rem;
+                font-weight: 600;
+                text-align: center;
+            }
+
+        .login-error-text.visible {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+<div class="app">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">⌂</div>
+            <div>
+                <h1 th:text="#{app.brand}">SmartHome</h1>
+                <span th:text="#{app.subtitle}">Control Center</span>
+            </div>
+        </div>
+
+        <nav class="nav">
+            <a class="nav-item" th:href="@{/}" th:text="'🏠 ' + #{nav.dashboard}">🏠 Dashboard</a>
+            <a class="nav-item" th:href="@{/lighting}" th:text="'💡 ' + #{nav.lighting}">💡 Lighting</a>
+            <a class="nav-item" th:href="@{/climate}" th:text="'🌡 ' + #{nav.climate}">🌡 Climate</a>
+            <a class="nav-item" th:href="@{/security}" th:text="'🔒 ' + #{nav.security}">🔒 Security</a>
+            <a class="nav-item" th:href="@{/settings}" th:text="'⚙ ' + #{nav.settings}">⚙ Settings</a>
+            <a class="nav-item active" th:href="@{/login}" th:text="'👤 ' + #{nav.login}">👤 Login</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+        <section class="topbar">
+            <div>
+                <h2 th:text="#{login.page.heading}">Sign In</h2>
+                <p th:text="#{login.page.description}">Access your smart home control center.</p>
+            </div>
+
+            <div class="topbar-actions">
+                <div class="language-switch">
+                    <span class="language-title" th:text="#{language.label}">Language</span>
+                    <a class="language-button" th:href="@{/login(lang='en')}" th:classappend="${#locale.language == 'en'} ? ' active' : ''">EN</a>
+                    <a class="language-button" th:href="@{/login(lang='bg')}" th:classappend="${#locale.language == 'bg'} ? ' active' : ''">BG</a>
+                </div>
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    <span th:text="#{topbar.online}">System online</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-grid">
+            <div class="panel login-container">
+                <div class="panel-header">
+                    <div>
+                        <h3 th:text="#{login.form.title}">Login</h3>
+                        <span th:text="#{login.form.subtitle}">Use 'owner' and 'home' to enter</span>
+                    </div>
+                </div>
+
+                <div th:if="${param.error}" class="error-message" th:text="#{login.error.invalid}">
+                    Invalid username or password.
+                </div>
+
+                <p id="loginErrorText" class="login-error-text">
+                    The username or the password is not valid
+                </p>
+
+                <form th:action="@{/login}" method="post" id="loginForm">
+                    <div class="form-group">
+                        <label for="username" th:text="#{login.label.username}">Username</label>
+                        <input type="text" id="username" name="username" class="form-input" required autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" th:text="#{login.label.password}">Password</label>
+                        <input type="password" id="password" name="password" class="form-input" required>
+                    </div>
+
+                    <button type="submit" class="btn-primary" th:text="#{login.button.submit}">Login</button>
+                </form>
+
+                <script>
+                    document.getElementById('loginForm').addEventListener('submit', function (event) {
+                        event.preventDefault();
+                        document.getElementById('loginErrorText').classList.add('visible');
+                    });
+                </script>
+
+                <div style="margin-top: 20px; text-align: center;">
+                    <a th:href="@{/register}" style="color: var(--primary); text-decoration: none; font-size: 0.9rem;"
+                       th:text="#{login.link.register}">Don't have an account? Register here</a>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+</body>
+</html>
