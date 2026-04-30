@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" th:lang="${#locale.language}"  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -62,27 +62,27 @@
 
         <section class="summary-grid">
             <article class="summary-card">
-                <div class="summary-label">Temperature</div>
+                <div class="summary-label" th:text="#{summary.temperature}">Temperature</div>
                 <div class="summary-value"><span id="summaryTemperature">22</span>°C</div>
-                <div class="summary-trend">Comfort mode active</div>
+                <div class="summary-trend" th:text="#{summary.temperature.status}">Comfort mode active</div>
             </article>
 
             <article class="summary-card">
-                <div class="summary-label">Humidity</div>
+                <div class="summary-label" th:text="#{summary.humidity}">Humidity</div>
                 <div class="summary-value">48%</div>
-                <div class="summary-trend">Healthy range</div>
+                <div class="summary-trend" th:text="#{summary.humidity.status}">Healthy range</div>
             </article>
 
             <article class="summary-card">
-                <div class="summary-label">Energy Usage</div>
+                <div class="summary-label" th:text="#{summary.energy}">Energy Usage</div>
                 <div class="summary-value">3.4 kW</div>
-                <div class="summary-trend">12% lower today</div>
+                <div class="summary-trend" th:text="#{summary.energy.status}">12% lower today</div>
             </article>
 
             <article class="summary-card">
-                <div class="summary-label">Active Devices</div>
+                <div class="summary-label" th:text="#{summary.devices}">Active Devices</div>
                 <div class="summary-value"><span id="activeDevices">3</span>/6</div>
-                <div class="summary-trend">All responding</div>
+                <div class="summary-trend" th:text="#{summary.devices.status}">All responding</div>
             </article>
         </section>
 
@@ -90,8 +90,8 @@
             <div class="panel">
                 <div class="panel-header">
                     <div>
-                        <h3>Devices</h3>
-                        <span>Quick controls for your home</span>
+                        <h3 th:text="#{devices.title}">Devices</h3>
+                        <span th:text="#{devices.subtitle}">Quick controls for your home</span>
                     </div>
                 </div>
 
@@ -104,8 +104,8 @@
                                 <span class="slider"></span>
                             </label>
                         </div>
-                        <h4>Living Room Lights</h4>
-                        <p>Warm white · 72% brightness</p>
+                        <h4 th:text="#{device.livingRoomLights}">Living Room Lights</h4>
+                        <p th:text="#{device.livingRoomLights.details}">Warm white · 72% brightness</p>
                     </article>
 
                     <article class="device-card">
@@ -116,8 +116,8 @@
                                 <span class="slider"></span>
                             </label>
                         </div>
-                        <h4>Media Center</h4>
-                        <p>Standby mode</p>
+                        <h4 th:text="#{device.mediaCenter}">Media Center</h4>
+                        <p th:text="#{device.mediaCenter.details}">Standby mode</p>
                     </article>
 
                     <article class="device-card">
@@ -128,8 +128,8 @@
                                 <span class="slider"></span>
                             </label>
                         </div>
-                        <h4>Front Door Lock</h4>
-                        <p>Locked · Last checked 2 minutes ago</p>
+                        <h4 th:text="#{device.frontDoorLock}" >Front Door Lock</h4>
+                        <p th:text="#{device.frontDoorLock.details}">Locked · Last checked 2 minutes ago</p>
                     </article>
 
                     <article class="device-card">
@@ -140,8 +140,8 @@
                                 <span class="slider"></span>
                             </label>
                         </div>
-                        <h4>Robot Vacuum</h4>
-                        <p>Docked · Battery 91%</p>
+                        <h4 th:text="#{device.robotVacuum}">Robot Vacuum</h4>
+                        <p th:text="#{device.robotVacuum.details}">Docked Battery 91%</p>
                     </article>
 
                     <article class="device-card">
@@ -152,8 +152,8 @@
                                 <span class="slider"></span>
                             </label>
                         </div>
-                        <h4>Security Camera</h4>
-                        <p>Recording · Motion detection on</p>
+                        <h4 th:text="#{device.securityCamera}">Security Camera</h4>
+                        <p th:text="#{device.securityCamera.details}">Recording · Motion detection on</p>
                     </article>
 
                     <article class="device-card">
@@ -164,8 +164,8 @@
                                 <span class="slider"></span>
                             </label>
                         </div>
-                        <h4>Garden Sprinklers</h4>
-                        <p>Next run tomorrow 06:30</p>
+                        <h4 th:text="#{device.gardenSprinklers}">Garden Sprinklers</h4>
+                        <p th:text="#{device.gardenSprinklers.details}">Next run tomorrow 06:30</p>
                     </article>
                 </div>
             </div>
@@ -174,8 +174,8 @@
                 <section class="panel">
                     <div class="panel-header">
                         <div>
-                            <h3>Climate</h3>
-                            <span>Thermostat control</span>
+                            <h3 th:text="#{climate.title}">Climate</h3>
+                            <span th:text="#{climate.subtitle}">Thermostat control</span>
                         </div>
                     </div>
 
@@ -198,8 +198,8 @@
                 <section class="panel" style="margin-top: 24px;">
                     <div class="panel-header">
                         <div>
-                            <h3>Recent Activity</h3>
-                            <span>Latest home events</span>
+                            <h3 th:text="#{activity.title}">Recent Activity</h3>
+                            <span th:text="#{activity.subtitle}">Latest home events</span>
                         </div>
                     </div>
 
@@ -207,24 +207,24 @@
                         <div class="activity-item">
                             <span class="activity-dot"></span>
                             <div>
-                                <strong>Front door locked</strong>
-                                <span>2 minutes ago</span>
+                                <strong th:text="#{activity.door}">Front door locked</strong>
+                                <span th:text="#{activity.door.time}">2 minutes ago</span>
                             </div>
                         </div>
 
                         <div class="activity-item">
                             <span class="activity-dot" style="background: var(--success);"></span>
                             <div>
-                                <strong>Living room lights turned on</strong>
-                                <span>15 minutes ago</span>
+                                <strong th:text="#{activity.lights}">Living room lights turned on</strong>
+                                <span th:text="#{activity.lights.time}">15 minutes ago</span>
                             </div>
                         </div>
 
                         <div class="activity-item">
                             <span class="activity-dot" style="background: var(--warning);"></span>
                             <div>
-                                <strong>Energy usage peaked</strong>
-                                <span>42 min ago</span>
+                                <strong th:text="#{activity.energy}">Energy usage peaked</strong>
+                                <span th:text="#{activity.energy.time}">42 min ago</span>
                             </div>
                         </div>
                     </div>
