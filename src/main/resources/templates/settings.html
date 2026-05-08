@@ -51,7 +51,13 @@
                         BG
                     </a>
                 </div>
+                <div class="user-pill" th:if="${loggedInUsername != null}">
+                    👤 <span th:text="${loggedInUsername}">username</span>
+                </div>
 
+                <form th:if="${loggedInUsername != null}" th:action="@{/logout}" method="post">
+                    <button type="submit" class="login-button">Logout</button>
+                </form>
                 <div class="status-pill">
                     <span class="status-dot"></span>
                     <span th:text="#{topbar.online}">System online</span>

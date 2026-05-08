@@ -52,11 +52,27 @@
                         BG
                     </a>
                 </div>
+                <div class="user-pill" th:if="${loggedInUsername != null}">
+                    👤 <span th:text="${loggedInUsername}">username</span>
+                </div>
+
+                <form class="topbar-form" th:if="${loggedInUsername != null}" th:action="@{/logout}" method="post">
+                    <button class="topbar-login-button" type="submit" >Logout</button>
+                </form>
+
+                <a th:if="${loggedInUsername == null}"
+                   class="topbar-login-button"
+                   th:href="@{/login}"
+                   th:text="#{nav.login}">
+                    Login
+                </a>
 
                 <div class="status-pill">
                     <span class="status-dot"></span>
                     <span th:text="#{topbar.online}">System online</span>
                 </div>
+
+
             </div>
         </section>
 
@@ -260,7 +276,7 @@
     }
 
     document.querySelectorAll(".device-toggle").forEach(toggle => {
-        toggle.addEventListener("change", updateActiveDevices);
+        toggle.addEventListener(",change", updateActiveDevices);
     });
 
     updateActiveDevices();

@@ -92,14 +92,6 @@
 
                     <button type="submit" class="btn-primary" th:text="#{login.button.submit}">Login</button>
                 </form>
-
-                <script>
-                    document.getElementById('loginForm').addEventListener('submit', function (event) {
-                        event.preventDefault();
-                        document.getElementById('loginErrorText').classList.add('visible');
-                    });
-                </script>
-
                 <div style="margin-top: 20px; text-align: center;">
                     <a th:href="@{/register}" style="color: var(--primary); text-decoration: none; font-size: 0.9rem;"
                        th:text="#{login.link.register}">Don't have an account? Register here</a>
