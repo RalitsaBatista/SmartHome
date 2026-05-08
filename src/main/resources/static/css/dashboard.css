@@ -90,6 +90,30 @@ body {
     background: rgba(79, 140, 255, 0.12);
 }
 
+.nav-logout-form {
+     margin: 0;
+     padding: 0;
+     width: 100%;
+ }
+
+ .nav-logout-button {
+     width: 100%;
+     border: 0;
+     outline: 0;
+     appearance: none;
+     -webkit-appearance: none;
+     background: transparent;
+     color: var(--muted);
+     font: inherit;
+     text-align: left;
+     cursor: pointer;
+ }
+
+ .nav-logout-button:hover {
+     color: var(--text);
+     background: rgba(79, 140, 255, 0.12);
+ }
+
 .main {
     padding: 30px;
 }
@@ -1325,3 +1349,4 @@ body {
     .topbar-login-button:active {
         transform: translateY(0);
     }
+
