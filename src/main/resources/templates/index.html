@@ -25,9 +25,7 @@
             <a class="nav-item" th:href="@{/climate}" th:text="'🌡 ' + #{nav.climate}">🌡 Climate</a>
             <a class="nav-item" th:href="@{/security}" th:text="'🔒 ' + #{nav.security}">🔒 Security</a>
             <a class="nav-item" th:href="@{/settings}"  th:text="'⚙ ' + #{nav.settings}">⚙ Settings</a>
-            <a class="nav-item" th:if="${loggedInUsername == null}" th:href="@{/login}" th:text="'👤 ' + #{nav.login}">
-            👤 Login </a>
-
+            <a class="nav-item" th:if="${loggedInUsername == null}" th:href="@{/login}" th:text="'👤 ' + #{nav.login}">👤 Login </a>
             <form th:if="${loggedInUsername != null}" th:action="@{/logout}" method="post" class="nav-logout-form">
                 <button type="submit" class="nav-item nav-logout-button" th:text="'👤 ' + #{nav.logout}">
                     👤 Logout
@@ -62,24 +60,19 @@
                 <div class="user-pill" th:if="${loggedInUsername != null}">
                     👤 <span th:text="${loggedInUsername}">username</span>
                 </div>
-
-                <form class="topbar-form" th:if="${loggedInUsername != null}" th:action="@{/logout}" method="post">
-                    <button class="topbar-login-button" th:href="@{/logout}" type="submit" >Logout</button>
-                </form>
-
                 <a th:if="${loggedInUsername == null}"
                    class="topbar-login-button"
                    th:href="@{/login}"
                    th:text="#{nav.login}">
                     Login
                 </a>
-
+                <form class="topbar-form" th:if="${loggedInUsername != null}" th:action="@{/logout}" method="post">
+                    <button class="topbar-login-button" type="submit" th:text="#{nav.logout}">Logout</button>
+                </form>
                 <div class="status-pill">
                     <span class="status-dot"></span>
                     <span th:text="#{topbar.online}">System online</span>
                 </div>
-
-
             </div>
         </section>
 

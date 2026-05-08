@@ -59,9 +59,14 @@
                 <div class="user-pill" th:if="${loggedInUsername != null}">
                     👤 <span th:text="${loggedInUsername}">username</span>
                 </div>
-
+                <a th:if="${loggedInUsername == null}"
+                   class="topbar-login-button"
+                   th:href="@{/login}"
+                   th:text="#{nav.login}">
+                    Login
+                </a>
                 <form class="topbar-form" th:if="${loggedInUsername != null}" th:action="@{/logout}" method="post">
-                    <button class="topbar-login-button" th:action="@{/logout}" type="submit" th:text="'👤 ' + #{nav.logout}">Logout</button>
+                    <button class="topbar-login-button" type="submit" th:text="#{nav.logout}">Logout</button>
                 </form>
                 <div class="status-pill">
                     <span class="status-dot"></span>

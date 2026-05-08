@@ -53,7 +53,7 @@ public class HomeController {
     @PostMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/";
+        return "redirect:/login";
     }
 
     @GetMapping("/register")
