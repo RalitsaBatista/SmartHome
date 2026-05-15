@@ -184,13 +184,21 @@
             </div>
 
             <div class="room-climate-grid">
-                <article class="room-climate-card">
+                <article class="room-climate-card" th:each="camera : ${cameras}">
                     <div class="device-icon">📷</div>
+
                     <div>
-                        <h4 th:text="#{security.camera.frontYard}">Front Yard</h4>
-                        <p th:text="#{security.camera.frontYard.details}">Recording · Motion detection on</p>
+                        <h4 th:text="${camera.name}">Front Yard Camera</h4>
+                        <p>
+                            <span th:text="${camera.room}">Front Yard</span>
+                            ·
+                            <span th:text="${camera.mode}">recording</span>
+                        </p>
                     </div>
-                    <span class="room-status comfortable" th:text="#{security.camera.status.online}">Online</span>
+
+                    <span class="room-status comfortable" th:text="${camera.status}">
+                            on
+                        </span>
                 </article>
 
                 <article class="room-climate-card">

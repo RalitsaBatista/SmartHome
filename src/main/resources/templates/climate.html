@@ -258,6 +258,42 @@
             </div>
 
             <div class="room-climate-grid">
+                <article class="room-climate-card" th:each="device : ${devices}">
+                    <div class="device-icon">🌡️</div>
+
+                    <div>
+                        <h4 th:text="${device.name}">Thermostat</h4>
+                        <p>
+                            <span th:text="${device.room}">Living Room</span>
+                            ·
+                            <span th:text="${device.mode}">auto</span>
+                        </p>
+                    </div>
+
+                    <form th:action="@{/devices/mode}" method="post">
+                        <input type="hidden" name="deviceId" th:value="${device.id}">
+                        <input type="hidden" name="returnTo" value="/climate">
+
+                        <select name="mode" class="form-input" onchange="this.form.submit()">
+                            <option value="auto" th:selected="${device.mode == 'auto'}">Auto</option>
+                            <option value="heat" th:selected="${device.mode == 'heat'}">Heat</option>
+                            <option value="cool" th:selected="${device.mode == 'cool'}">Cool</option>
+                            <option value="eco" th:selected="${device.mode == 'eco'}">Eco</option>
+                        </select>
+                    </form>
+                </article>
+            </div>
+        </section>
+
+        <section class="panel room-climate-panel">
+            <div class="panel-header">
+                <div>
+                    <h3 th:text="#{climate.rooms.title}">Room Temperatures</h3>
+                    <span th:text="#{climate.rooms.subtitle}">Monitor comfort across your home</span>
+                </div>
+            </div>
+
+            <div class="room-climate-grid">
                 <article class="room-climate-card">
                     <div class="device-icon">🛋️</div>
                     <div>

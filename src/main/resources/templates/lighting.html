@@ -117,6 +117,47 @@
                 </div>
 
                 <div class="lighting-grid">
+
+                    <article class="light-card" th:each="device : ${devices}">
+                        <div class="light-card-top">
+                            <div class="device-icon">💡</div>
+
+                            <form th:action="@{/devices/toggle}" method="post">
+                                <input type="hidden" name="deviceId" th:value="${device.id}">
+                                <button type="submit" class="scene-button"
+                                        th:text="${device.status == 'on'} ? 'Turn off' : 'Turn on'">
+                                    Toggle
+                                </button>
+                            </form>
+                        </div>
+
+                        <h4 th:text="${device.name}">Living Room Light</h4>
+                        <p>
+                            <span th:text="${device.room}">Living Room</span>
+                            ·
+                            <span th:text="${device.status}">off</span>
+                        </p>
+
+                        <form th:action="@{/devices/brightness}" method="post">
+                            <input type="hidden" name="deviceId" th:value="${device.id}">
+
+                            <label class="brightness-label">
+                                <span th:text="#{lighting.brightness}">Brightness</span>
+                                <span class="brightness-value">
+                                        <span th:text="${device.brightness}">100</span>%
+                                    </span>
+                            </label>
+
+                            <input class="brightness-slider"
+                                   type="range"
+                                   min="0"
+                                   max="100"
+                                   name="brightness"
+                                   th:value="${device.brightness}"
+                                   onchange="this.form.submit()">
+                        </form>
+                    </article>
+
                     <article class="light-card">
                         <div class="light-card-top">
                             <div class="device-icon">🛋️</div>

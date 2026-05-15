@@ -32,6 +32,28 @@ body {
     min-height: 100vh;
 }
 
+.app-message {
+    margin: 0 0 1.25rem;
+    padding: 0.9rem 1rem;
+    border-radius: 14px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border: 1px solid transparent;
+}
+
+.app-message-success {
+    color: #bbf7d0;
+    background: rgba(34, 197, 94, 0.14);
+    border-color: rgba(34, 197, 94, 0.35);
+}
+
+.app-message-error {
+    color: #fecaca;
+    background: rgba(239, 68, 68, 0.14);
+    border-color: rgba(239, 68, 68, 0.35);
+}
+
+
 .sidebar {
     padding: 28px 22px;
     background: rgba(5, 8, 22, 0.92);

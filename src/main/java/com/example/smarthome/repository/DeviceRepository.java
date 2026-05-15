@@ -15,10 +15,3 @@ public interface DeviceRepository extends JpaRepository<Device, Long> {
 
     List<Device> findByStatus(String status);
 }
-/*
-@Repository 
-public interface DeviceRepository extends JpaRepository<Device, Long> {
-    List<Device> findByUserIdAndType(Long userId, String type);
-    List<Device> updateDeviceStatus(Long deviceId, String status);
-}
-*/
